@@ -2,7 +2,7 @@ from pyspark.ml import PipelineModel
 import os
 import joblib
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, lit
 import pandas as pd
 import numpy as np
 import sys
@@ -38,6 +38,10 @@ def returnsimilarparagraph(name):
 	return resultssimilar
 
 def returnissues(name):
-	mensagens_intervencao_identificada_depois_intervencao = mensagens_intervencao_identificada_all_issues.filter((col('issue_id_messages') == 1895328))
+	namevalues = [name[0].item(), name[1].item(), name[2].item()]	
+	mensagens_intervencao_identificada_depois_intervencao = []
+	mensagens_intervencao_identificada_depois_intervencao.append(mensagens_intervencao_identificada_all_issues.filter(mensagens_intervencao_identificada_all_issues.issue_id_messages.isin(namevalues[0])).rdd.collect())
+	mensagens_intervencao_identificada_depois_intervencao.append(mensagens_intervencao_identificada_all_issues.filter(mensagens_intervencao_identificada_all_issues.issue_id_messages.isin(namevalues[1])).rdd.collect())
+	mensagens_intervencao_identificada_depois_intervencao.append(mensagens_intervencao_identificada_all_issues.filter(mensagens_intervencao_identificada_all_issues.issue_id_messages.isin(namevalues[2])).rdd.collect())
 	print(mensagens_intervencao_identificada_depois_intervencao, file=sys.stderr) 
-	return mensagens_intervencao_identificada_depois_intervencao.collect()[0].body
+	return mensagens_intervencao_identificada_depois_intervencao

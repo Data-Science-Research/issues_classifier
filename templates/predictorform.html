@@ -3,6 +3,7 @@
 		<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
 		<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
 		<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+		<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/estilos.css') }}">
 		<script type="text/javascript">
 			$(function() {
 				function split( val ) {
@@ -46,16 +47,27 @@
 		</script>
 </head>
    <body>
+   	<div class='header'>
+   		<img src="{{ url_for('static', filename='img/picpay.png') }}">
+   		<img src="{{ url_for('static', filename='img/ifsp.png') }}">
+   		<img src="{{ url_for('static', filename='img/unifesp.png') }}">   		
+   	</div>  	
+    <br><br>
+
       <form action = "http://localhost:9999/results" method = "POST">
-         <p>Informe o seu problema:</p>
-         <textarea name="year" rows="10" cols="40"></textarea><br>
+         
+         <div class='wrapper'>
+         	<div class='main'>	         	
+         		<h1>Informe o seu problema:</h1>
+         		<textarea name="autocomplete" type="text" size="100%" rows="5" id="autocomplete"></textarea><br>
 
-         <input type="text" name="palavra" name="lname"><br><br>
+	         	<!--textarea name="year"></textarea><br-->	         	
+	            <!--input type="text" name="palavra" name="lname"><br><br-->
 
-         <input type="submit"><br><br>
-
-         <input name="autocomplete" type="text" size="100" id="autocomplete"/>
-
+	            <input type="submit"><br><br>
+	            
+            </div>         	
+         </div>
       </form>
    </body>
 </html>

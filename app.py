@@ -12,20 +12,17 @@ def show_predict_stock_form():
 @app.route('/results', methods=['POST'])
 def results():
     form = request.form
-    if request.method == 'POST':
-      #write your function that loads the model
-      model = classifiermodule.returnprediction(request.form['year']) #get_model() #you can use pickle to load the trained model
-      year = request.form['year']
-      predicted_stock_price = 'modelo' #model.predict(year)
+    if request.method == 'POST':      
+      #Resgatará a classificação das categorias
+      model = classifiermodule.returnprediction(request.form['autocomplete'])
 
-      palavra = request.form['palavra']
-      synonums = classifiermodule.returnsynonums(request.form['palavra'])
+      #Resgatará Issues ID similares
+      paragraphvector = classifiermodule.returnsimilarparagraph(request.form['autocomplete'])
 
-      paragraphvector = classifiermodule.returnsimilarparagraph(request.form['year'])
+      #Resgatará troca de mensagens dos Issues similares
+      similarissues = classifiermodule.returnissues([paragraphvector[0][0], paragraphvector[1][0], paragraphvector[2][0]])
 
-      similarissues = classifiermodule.returnissues('name')
-
-      return render_template('resultsform.html', year=year, predicted_price=model, palavra=palavra, sinonimo=paragraphvector, issues=similarissues)
+      return render_template('resultsform.html', problema=request.form['autocomplete'], groups=model, issuesid=paragraphvector, issues=similarissues)
 
 @app.route('/autocomplete', methods=['GET'])
 def autocomplete():
