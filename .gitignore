@@ -1,0 +1,4 @@
+classifier_MLP.pkl
+classifier_Paragraph_Vector.pkl
+classifier_Word2Vec.pipeline/
+mensagens_intervencao_identificada_all_issues/

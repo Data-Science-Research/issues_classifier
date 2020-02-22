@@ -1,0 +1,61 @@
+<html>
+	<head>
+		<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+		<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+		<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+		<script type="text/javascript">
+			$(function() {
+				function split( val ) {
+      				//return val.split( /,\s*/ );
+      				return val.split(' ');
+    			}
+    			function extractLast( term ) {
+      				return split( term ).pop();
+    			}
+
+			    $("#autocomplete")
+
+			    .on( "keydown", function( event ) {
+        			if ( event.keyCode === $.ui.keyCode.TAB &&
+            			$( this ).autocomplete( "instance" ).menu.active ) {event.preventDefault();}
+      			})
+
+			    .autocomplete({
+			        source:function(request, response) {
+			            $.getJSON("{{url_for('autocomplete')}}",{
+			                q: request.term, // in flask, "q" will be the argument to look for using request.args
+			            }, function(data) {
+			                response(data.matching_results); // matching_results from jsonify
+			            });
+			        },
+			        minLength: 2,
+			        select: function(event, ui) {
+			            console.log(ui.item.value); // not in your question, but might help later
+			            var terms = split( this.value );
+          				// remove the current input
+          				terms.pop();
+          				// add the selected item
+          				terms.push( ui.item.value );
+          				// add placeholder to get the comma-and-space at the end
+          				terms.push( "" );
+          				this.value = terms.join( " " );
+          				return false;			            
+			        }
+			    });
+			})
+		</script>
+</head>
+   <body>
+      <form action = "http://localhost:9999/results" method = "POST">
+         <p>Informe o seu problema:</p>
+         <textarea name="year" rows="10" cols="40"></textarea><br>
+
+         <input type="text" name="palavra" name="lname"><br><br>
+
+         <input type="submit"><br><br>
+
+         <input name="autocomplete" type="text" size="100" id="autocomplete"/>
+
+      </form>
+   </body>
+</html>

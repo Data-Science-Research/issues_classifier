@@ -1,0 +1,37 @@
+<html>
+	<head>
+		<link href="//code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" rel="Stylesheet"></link>
+		<script src="//code.jquery.com/jquery-2.2.0.min.js"></script>
+		<script src="//code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+		<script type="text/javascript">
+			$(function() {
+			    $("#autocomplete").autocomplete({
+			        source:function(request, response) {
+			            $.getJSON("{{url_for('autocomplete')}}",{
+			                q: request.term, // in flask, "q" will be the argument to look for using request.args
+			            }, function(data) {
+			                response(data.matching_results); // matching_results from jsonify
+			            });
+			        },
+			        minLength: 2,
+			        select: function(event, ui) {
+			            console.log(ui.item.value); // not in your question, but might help later			            
+			        }
+			    });
+			})
+		</script>
+</head>
+   <body>
+      <form action = "http://localhost:9999/results" method = "POST">
+         <p>Informe o seu problema:</p>
+         <textarea name="year" rows="10" cols="40"></textarea><br>
+
+         <input type="text" name="palavra" name="lname"><br><br>
+
+         <input type="submit"><br><br>
+
+         <div><input name="autocomplete" type="text" id="autocomplete" class="form-control input-lg"/></div>
+
+      </form>
+   </body>
+</html>
