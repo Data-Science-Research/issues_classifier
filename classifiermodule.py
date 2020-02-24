@@ -31,7 +31,7 @@ def returnsynonums(name):
 
 def returnsimilarparagraph(name):
 	test = spark.createDataFrame([(1, name)], ["issue_id_messages", "grouped_body_concat_clear"])
-	print(pipelineLoad.stages[1].transform(pipelineLoad.stages[0].transform(test)).collect()[0][3], file=sys.stderr) 
+	#print(pipelineLoad.stages[1].transform(pipelineLoad.stages[0].transform(test)).collect()[0][3], file=sys.stderr) 
 	wordsTransform = pipelineLoad.stages[1].transform(pipelineLoad.stages[0].transform(test)).collect()[0][3]
 	infer_vector = modelParagraphVector.infer_vector(wordsTransform)
 	resultssimilar = modelParagraphVector.docvecs.most_similar([infer_vector], topn = 3)
@@ -43,5 +43,5 @@ def returnissues(name):
 	mensagens_intervencao_identificada_depois_intervencao.append(mensagens_intervencao_identificada_all_issues.filter(mensagens_intervencao_identificada_all_issues.issue_id_messages.isin(namevalues[0])).rdd.collect())
 	mensagens_intervencao_identificada_depois_intervencao.append(mensagens_intervencao_identificada_all_issues.filter(mensagens_intervencao_identificada_all_issues.issue_id_messages.isin(namevalues[1])).rdd.collect())
 	mensagens_intervencao_identificada_depois_intervencao.append(mensagens_intervencao_identificada_all_issues.filter(mensagens_intervencao_identificada_all_issues.issue_id_messages.isin(namevalues[2])).rdd.collect())
-	print(mensagens_intervencao_identificada_depois_intervencao, file=sys.stderr) 
+	#print(mensagens_intervencao_identificada_depois_intervencao, file=sys.stderr) 
 	return mensagens_intervencao_identificada_depois_intervencao
